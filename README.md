@@ -2,7 +2,7 @@
 
 Primer módulo del MVP de [NINTAI](https://jocelin-portafolio.github.io/#nintai): un chatbot que conversa con la persona sobre su experiencia (trabajos, tareas de cuidado, emprendimientos, hobbies) y construye un **mapa de capacidades** con habilidades basadas en evidencia, habilidades transferibles, rutas paso a paso y un **micro-servicio** que puede ofrecer de inmediato.
 
-**[▶ Ver la demo](https://jocelin-portafolio.github.io/nintai-capacidades/?reproducir=1)** · conversación de ejemplo pregrabada, sin IA ni costo.
+**[▶ App en vivo](https://nintai-capacidades.onrender.com)** (Render) · **[Demo pregrabada](https://jocelin-portafolio.github.io/nintai-capacidades/?reproducir=1)** (GitHub Pages, sin IA ni costo)
 
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
