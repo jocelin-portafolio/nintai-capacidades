@@ -76,11 +76,26 @@ Abre http://localhost:8000. **Sin clave de API la app arranca en modo demo** con
 | `NINTAI_MODEL` | `claude-opus-5-5` | Modelo |
 | `NINTAI_EFFORT` | `medium` | Esfuerzo de razonamiento |
 | `NINTAI_DEMO` | — | `1` fuerza el modo demo |
+| `NINTAI_PRESUPUESTO_DIARIO_USD` | `2` | Gasto máximo diario en la API; al alcanzarlo, el chat se pausa hasta el día siguiente |
+| `NINTAI_MAX_MENSAJES_SESION` | `20` | Mensajes por conversación |
+| `NINTAI_MAX_MENSAJES_IP_HORA` | `40` | Mensajes por IP en una hora |
+| `NINTAI_CONFIAR_PROXY` | — | `1` detrás de un proxy (Render, Railway) para leer la IP real |
+
+## Publicar en internet (Render)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/jocelin-portafolio/nintai-capacidades)
+
+1. Crea una cuenta en [render.com](https://render.com) con tu GitHub.
+2. Pulsa el botón de arriba. Render lee `render.yaml` y crea el servicio.
+3. Cuando lo pida, pega tu `ANTHROPIC_API_KEY`. Queda como secreto en Render, nunca en el repositorio.
+4. Al terminar tendrás una URL del tipo `https://nintai-capacidades.onrender.com`.
+
+**Protección de la clave en un despliegue público:** límites de mensajes por conversación y por IP, y un presupuesto diario en dólares (`app/limites.py`). Además, conviene fijar un límite de gasto mensual en la [consola de Anthropic](https://console.anthropic.com). En el plan gratuito de Render el servicio se duerme tras unos minutos sin uso; la primera visita tarda unos segundos en despertarlo.
 
 ## Tests y evals
 
 ```bash
-pytest -q                     # 25 tests sin red: agente con cliente falso, API, esquemas, harness
+pytest -q                     # 30 tests sin red: agente con cliente falso, API, límites, esquemas, harness
 python evals/run_evals.py     # agente real contra evals/casos.yaml (cuesta tokens)
 ```
 
@@ -104,6 +119,7 @@ app/
 ├── schemas.py    # MapaCapacidades (Pydantic)
 ├── history.py    # Saneamiento del historial tras un fallback
 ├── demo.py       # Agente de demostración sin IA
+├── limites.py    # Límites de uso y presupuesto diario
 └── main.py       # FastAPI: SSE, sesiones en memoria, archivos estáticos
 web/              # Interfaz (HTML, CSS y JS sin dependencias) + guion de la demo
 evals/            # Casos YAML y harness

@@ -1,0 +1,24 @@
+# Blueprint de Render: https://render.com/docs/blueprint-spec
+# Despliega el backend (FastAPI) con la interfaz incluida.
+services:
+  - type: web
+    name: nintai-capacidades
+    runtime: python
+    plan: free
+    buildCommand: pip install -e .
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/estado
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: ANTHROPIC_API_KEY
+        sync: false            # Render la pide al crear el servicio; nunca va en el código
+      - key: NINTAI_CONFIAR_PROXY
+        value: "1"             # la IP real llega en X-Forwarded-For
+      - key: NINTAI_PRESUPUESTO_DIARIO_USD
+        value: "2"
+      - key: NINTAI_MAX_MENSAJES_SESION
+        value: "20"
+      - key: NINTAI_MAX_MENSAJES_IP_HORA
+        value: "40"

@@ -12,12 +12,13 @@ from pathlib import Path
 from typing import Protocol
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from app.agent import AgenteCapacidades, Sesion, a_sse
+from app.limites import Limitador
 
 load_dotenv()
 
@@ -40,8 +41,24 @@ class Mensaje(BaseModel):
     texto: str = Field(min_length=1, max_length=4000)
 
 
-def crear_app(agente: Agente | None = None, demo: bool | None = None) -> FastAPI:
+def _ip_cliente(request: Request) -> str:
+    # Detrás de un proxy (Render, Railway…) la IP real llega en X-Forwarded-For.
+    if os.environ.get("NINTAI_CONFIAR_PROXY") == "1":
+        reenviada = request.headers.get("x-forwarded-for", "")
+        if reenviada:
+            return reenviada.split(",")[0].strip()
+    return request.client.host if request.client else "desconocida"
+
+
+def _mensajes_usuario(sesion: Sesion) -> int:
+    return sum(1 for m in sesion.messages if m["role"] == "user" and isinstance(m["content"], str))
+
+
+def crear_app(
+    agente: Agente | None = None, demo: bool | None = None, limitador: Limitador | None = None
+) -> FastAPI:
     demo = _modo_demo() if demo is None else demo
+    limitador = limitador or Limitador()
     if agente is None:
         if demo:
             from app.demo import AgenteDemo
@@ -67,10 +84,17 @@ def crear_app(agente: Agente | None = None, demo: bool | None = None) -> FastAPI
         return {"ok": True, "demo": demo}
 
     @app.post("/api/chat")
-    async def chat(mensaje: Mensaje) -> StreamingResponse:
+    async def chat(mensaje: Mensaje, request: Request) -> StreamingResponse:
         sesion = obtener_sesion(mensaje.sesion_id)
+        # Los límites solo aplican cuando hay gasto real (no en modo demo).
+        rechazo = None if demo else limitador.verificar(_ip_cliente(request), _mensajes_usuario(sesion))
 
         async def eventos():
+            if rechazo:
+                yield a_sse({"tipo": "error", "mensaje": rechazo})
+                yield a_sse({"tipo": "fin", "uso": sesion.uso.a_dict()})
+                return
+            costo_previo = sesion.uso.costo_usd
             try:
                 async for evento in agente.responder(sesion, mensaje.texto.strip()):
                     yield a_sse(evento)
@@ -80,6 +104,8 @@ def crear_app(agente: Agente | None = None, demo: bool | None = None) -> FastAPI
                 logging.exception("Error en la conversación")
                 yield a_sse({"tipo": "error", "mensaje": "Ocurrió un error. Intenta de nuevo."})
                 yield a_sse({"tipo": "fin", "uso": sesion.uso.a_dict()})
+            finally:
+                limitador.registrar_gasto(sesion.uso.costo_usd - costo_previo)
 
         return StreamingResponse(eventos(), media_type="text/event-stream")
 
