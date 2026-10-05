@@ -1,0 +1,42 @@
+name: Evals
+
+# Los evals llaman a la API de Claude: cuestan dinero y no son deterministas.
+# Se ejecutan a mano (Actions → Evals → Run workflow) o cuando cambia el agente.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ["app/**", "evals/**", "pyproject.toml"]
+
+concurrency:
+  group: evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --extra dev
+      - name: Comprobar API key
+        id: clave
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::notice::ANTHROPIC_API_KEY no configurada: se omiten los evals."
+            echo "hay=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "hay=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.clave.outputs.hay == 'true'
+        run: uv run python evals/run_evals.py
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.clave.outputs.hay == 'true'
+        with:
+          name: evals
+          path: evals/resultados/
+          if-no-files-found: ignore

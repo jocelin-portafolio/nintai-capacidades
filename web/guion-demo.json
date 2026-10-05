@@ -1,0 +1,54 @@
+{
+  "aviso": "Conversación de ejemplo pregrabada. En este modo no se usa IA: las respuestas son fijas para mostrar el flujo.",
+  "saludo": "Hola, soy el asistente de NINTAI. Vamos a descubrir qué sabes hacer y cómo convertirlo en nuevas oportunidades. Para empezar, ¿a qué te has dedicado en los últimos años?",
+  "turnos": [
+    {
+      "usuario": "Trabajé 8 años como administrativa en un colegio. Llevaba las matrículas, atendía a los apoderados y armaba los horarios de los profesores.",
+      "asistente": "Ocho años en un colegio dicen mucho de tu capacidad para organizar y atender a personas. Cuando armabas los horarios, ¿cómo resolvías los choques entre profesores o salas?"
+    },
+    {
+      "usuario": "Hacía una planilla en Excel con todas las restricciones y la iba ajustando. También organizaba las ceremonias de fin de año, con presupuesto y proveedores.",
+      "asistente": "Eso es planificación con restricciones y gestión de eventos con presupuesto: dos habilidades muy buscadas. Fuera del trabajo, ¿hay algo que hagas bien y que otras personas te pidan?"
+    },
+    {
+      "usuario": "Mis vecinas me piden ayuda con sus trámites online y les armé un Excel para controlar los gastos de la casa.",
+      "asistente": "Ayudar con trámites digitales y ordenar finanzas familiares también son capacidades valiosas. Última pregunta: ¿qué te gustaría lograr y cuánto tiempo tienes disponible?"
+    },
+    {
+      "usuario": "Quiero trabajar desde la casa, unas 20 horas a la semana, y necesito ingresos pronto.",
+      "generando": true,
+      "asistente": "Listo, tu mapa ya está en el panel. Tu gran fortaleza es ordenar lo complejo: horarios, eventos y finanzas. El primer paso es ofrecer tu servicio de organización administrativa a tres pymes de tu barrio esta semana."
+    }
+  ],
+  "mapa": {
+    "resumen_perfil": "Administrativa con 8 años de experiencia en un colegio, con fortaleza en organización, atención de personas y planillas. Busca trabajo remoto de 20 horas semanales con ingresos a corto plazo.",
+    "habilidades": [
+      {"nombre": "Planificación con restricciones", "tipo": "tecnica", "nivel": "avanzado", "evidencia": "Armaba los horarios de los profesores resolviendo choques de salas y disponibilidad."},
+      {"nombre": "Excel y planillas", "tipo": "tecnica", "nivel": "intermedio", "evidencia": "Usaba Excel para horarios y creó un control de gastos para sus vecinas."},
+      {"nombre": "Atención de apoderados", "tipo": "blanda", "nivel": "avanzado", "evidencia": "Atendió a apoderados durante 8 años en matrículas y consultas."},
+      {"nombre": "Gestión de eventos y presupuesto", "tipo": "tecnica", "nivel": "intermedio", "evidencia": "Organizaba las ceremonias de fin de año con presupuesto y proveedores."},
+      {"nombre": "Acompañamiento en trámites digitales", "tipo": "blanda", "nivel": "intermedio", "evidencia": "Sus vecinas le piden ayuda con trámites online."}
+    ],
+    "transferibles": [
+      {"habilidad": "Planificación con restricciones", "hacia": "Asistente virtual y coordinación de agendas", "por_que": "Coordinar agendas de varias personas es el mismo problema que armar horarios escolares."},
+      {"habilidad": "Excel y planillas", "hacia": "Orden administrativo y financiero para pymes", "por_que": "Muchas pymes llevan sus cuentas sin estructura y necesitan planillas simples."},
+      {"habilidad": "Atención de apoderados", "hacia": "Atención al cliente remota", "por_que": "Tiene experiencia resolviendo dudas y reclamos con calma."}
+    ],
+    "brechas": [
+      {"habilidad": "Herramientas de agenda en la nube", "recurso_sugerido": "Curso gratuito de Google Workspace (Calendar y Sheets), 6 horas."},
+      {"habilidad": "Facturación electrónica", "recurso_sugerido": "Tutoriales del SII sobre boleta de honorarios electrónica."}
+    ],
+    "rutas": [
+      {"titulo": "Asistente administrativa remota para pymes", "tipo": "freelance", "pasos": ["Definir un paquete de servicio con precio", "Armar una planilla demo de control de gastos", "Ofrecerlo a 3 pymes conocidas", "Pedir un testimonio al primer cliente"], "horizonte_semanas": 4},
+      {"titulo": "Coordinación de agenda en un centro de salud", "tipo": "empleo", "pasos": ["Actualizar el CV destacando planificación", "Postular a 5 ofertas de jornada parcial remota"], "horizonte_semanas": 8}
+    ],
+    "micro_servicio": {
+      "nombre": "Orden administrativo en 2 semanas",
+      "descripcion": "Planilla de ingresos y gastos, calendario de pagos y una sesión para enseñar a usarlos.",
+      "cliente_objetivo": "Pymes y emprendedoras del barrio sin control administrativo",
+      "entregables": ["Planilla de ingresos y gastos", "Calendario de pagos y vencimientos", "Sesión de capacitación de 1 hora"],
+      "precio_referencial_clp": {"min": 60000, "max": 90000},
+      "canal_venta": "WhatsApp y grupos de emprendedoras del barrio"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NINTAI · Mapa de capacidades</title>
+  <meta name="description" content="Chatbot de NINTAI: conversa sobre tu experiencia y obtén un mapa de capacidades, rutas y un micro-servicio que puedes ofrecer.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0d0b'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%238cf59a'%3E%E5%BF%8D%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="brand__kanji" lang="ja" aria-hidden="true">忍耐</span>
+      <div>
+        <p class="brand__name">NINTAI</p>
+        <p class="brand__sub">Mapa de capacidades</p>
+      </div>
+    </div>
+    <p class="mode" id="modo" hidden></p>
+    <button type="button" class="btn-ghost" id="reiniciar">Nueva conversación</button>
+  </header>
+
+  <main class="layout">
+    <section class="chat" aria-label="Conversación">
+      <div class="aviso" id="aviso" hidden></div>
+      <ol class="mensajes" id="mensajes" aria-live="polite"></ol>
+      <div class="sugerencia" id="sugerencia" hidden>
+        <span>Respuesta de ejemplo</span>
+        <button type="button" id="usarSugerencia"></button>
+      </div>
+      <form class="entrada" id="formulario" autocomplete="off">
+        <label class="sr-only" for="texto">Tu mensaje</label>
+        <textarea id="texto" rows="1" maxlength="4000" placeholder="Cuéntame sobre tu experiencia…" required></textarea>
+        <button type="submit" id="enviar" aria-label="Enviar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <p class="nota">No compartas datos sensibles como tu RUT, dirección o datos bancarios.</p>
+    </section>
+
+    <aside class="panel" aria-label="Mapa de capacidades">
+      <div class="panel__vacio" id="vacio">
+        <span class="panel__kanji" lang="ja" aria-hidden="true">忍耐</span>
+        <h2>Tu mapa aparecerá aquí</h2>
+        <p>Después de unas pocas preguntas verás tus habilidades, cuáles puedes llevar a otros roles, una ruta paso a paso y un micro-servicio que puedes ofrecer.</p>
+        <ol class="pasos-mini">
+          <li>Descubrir</li><li>Interpretar</li><li>Explorar</li><li>Construir</li>
+        </ol>
+      </div>
+      <div class="cargando" id="cargando" hidden><span></span> Construyendo tu mapa…</div>
+      <div class="mapa" id="mapa" hidden></div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
